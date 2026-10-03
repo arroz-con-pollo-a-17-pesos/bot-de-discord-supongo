@@ -21,7 +21,7 @@ def flip_coin():
 
 def random_emoticons(uhh):
     for i in range(uhh):
-        emoticons = ["^_^", ":)", ":D", ":O", ":P", ":/"]
+        emoticons = ["^_^", ":)", ":D", ":O", ":P", ":/", "UwU", ":]"]
         emoticon_choice = random.choice(emoticons)
 
     return emoticon_choice
