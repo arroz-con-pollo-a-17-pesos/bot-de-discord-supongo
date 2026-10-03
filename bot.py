@@ -1,32 +1,51 @@
-from bot_logic import *
 import discord
+from discord.ext import commands
+from bot_logic import *
 
-# La variable intents almacena los privilegios del bot
 intents = discord.Intents.default()
-# Activar el privilegio de lectura de mensajes
 intents.message_content = True
-# Crear un bot en la variable cliente y transferirle los privilegios
-client = discord.Client(intents=intents)
 
-@client.event
+bot = commands.Bot(command_prefix='$', intents=intents)
+
+@bot.event
 async def on_ready():
-    print(f'Hemos iniciado sesión como {client.user}')
+    print(f'We have logged in as {bot.user}')
 
-@client.event
-async def on_message(message):
-    if message.author == client.user:
-        return
-    if message.content.startswith('$hello'):
-        await message.channel.send("Hi!")
-    elif message.content.startswith('$bye'):
-        await message.channel.send("\U0001f642")
-    elif message.content.startswith('$pass'):
-        await message.channel.send(gen_pass(10))
-    elif message.content.startswith('$coin'):
-        await message.channel.send(flip_coin())
-    elif message.content.startswith('$emoticon'):
-        await message.channel.send(random_emoticons(1))
-    else:
-        await message.channel.send(message.content)
+@bot.command()
+async def hello(ctx):
+    await ctx.send(f'Hola, soy un bot {bot.user}!')
 
-client.run("nuh uh")
+@bot.command()
+async def heh(ctx, count_heh = 5):
+    await ctx.send("he" * count_heh)
+
+@bot.command()
+async def surprised(ctx):
+    await ctx.send("O.O")
+
+@bot.command()
+async def bye(ctx):
+    await ctx.send(f'Bye bye!')
+
+@bot.command()
+async def password(ctx):
+    length = int(input("Ingrese la longitud de su contraseña "))
+    password = gen_pass(length)
+    await ctx.send(f"Tu contraseña es: {password}")
+
+@bot.command()
+async def emoticons(ctx):
+    uhh = 1
+    emoticons = random_emoticons(uhh)
+    await ctx.send(emoticons)
+
+@bot.command()
+async def coin(ctx):
+    coin = flip_coin()
+    await ctx.send(coin)
+
+@bot.command()
+async def guide(ctx):
+    await ctx.send(f"$hello = El bot te saluda \n$heh = El bot se rie \n$surprised = El bot pone una cara sorprendida \n$bye = El bot se despide \n$password = Genera una contraseña aleatoria \n$emoticons = Muestra un emoticono aleatorio. \n$coin = El bot gira una moneda")
+
+bot.run("meow")
